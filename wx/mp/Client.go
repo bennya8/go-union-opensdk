@@ -3,9 +3,9 @@ package mp
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/bennya8/go-union-opensdk/wx/mp/resp"
 	"github.com/ddliu/go-httpclient"
 	"github.com/patrickmn/go-cache"
-	"mctea/app/webservices/wx/mp/resp"
 	"net/url"
 	"time"
 )
@@ -22,10 +22,12 @@ type Client struct {
 	AppSecret string
 }
 
-func NewClient() *Client {
+func NewClient(appId string, appSecret string) *Client {
 	return &Client{
-		http:     httpclient.NewHttpClient(),
-		ramCache: cache.New(5*time.Minute, 10*time.Minute),
+		http:      httpclient.NewHttpClient(),
+		ramCache:  cache.New(5*time.Minute, 10*time.Minute),
+		AppId:     appId,
+		AppSecret: appSecret,
 	}
 }
 
