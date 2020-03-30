@@ -165,22 +165,3 @@ func (c *Client) GetJsApiTicket() (*resp.GetJsApiTicketRsp, error) {
 	return &rs, nil
 }
 
-// 发送模板消息
-func (c *Client) MessageTemplateSend() (*resp.MessageTemplateSendResp, error) {
-	var rs resp.MessageTemplateSendResp
-	rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/message/template/send", map[string]interface{}{
-		"access_token": c.GetAccessToken(),
-	})
-	if err != nil {
-		return nil, err
-	}
-	body, err := rsp.ToString()
-	if err != nil {
-		return nil, err
-	}
-	err = json.Unmarshal([]byte(body), &rs)
-	if err != nil {
-		return nil, err
-	}
-	return &rs, nil
-}
