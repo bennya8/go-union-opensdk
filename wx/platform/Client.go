@@ -15,7 +15,7 @@ const (
 
 type Client struct {
 	http         *httpclient.HttpClient
-	memCache     *cache.Cache
+	ramCache     *cache.Cache
 	AppId        string
 	AppSecret    string
 	EncodeAesKey string
@@ -25,7 +25,7 @@ type Client struct {
 func NewClient(appId string, appSecret string, encodeAesKey string, token string) *Client {
 	return &Client{
 		http:         httpclient.NewHttpClient(),
-		memCache:     cache.New(5*time.Minute, 10*time.Minute),
+		ramCache:     cache.New(5*time.Minute, 10*time.Minute),
 		AppId:        appId,
 		AppSecret:    appSecret,
 		EncodeAesKey: encodeAesKey,
