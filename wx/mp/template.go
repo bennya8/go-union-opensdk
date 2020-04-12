@@ -39,7 +39,7 @@ func (c *Client) MessageTemplateSend() (*resp.MessageTemplateSendResp, error) {
 	if err != nil {
 		return nil, err
 	}
-	rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/message/template/send", map[string]interface{}{
+	rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/message/template/send", map[string]string{
 		"access_token": tokenRsp.AccessToken,
 	})
 	if err != nil {

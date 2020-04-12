@@ -58,7 +58,7 @@ func (c *Client) GetAccessToken() (*resp.GetAccessTokenRsp, error) {
 
 	val, exist := c.ramCache.Get(cacheId)
 	if !exist {
-		rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/token", map[string]interface{}{
+		rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/token", map[string]string{
 			"grant_type": "client_credential",
 			"appid":      c.AppId,
 			"secret":     c.AppSecret,
@@ -88,7 +88,7 @@ func (c *Client) GetAccessToken() (*resp.GetAccessTokenRsp, error) {
 func (c *Client) GetUserAccessToken(code string) (*resp.GetUserAccessTokenRsp, error) {
 	var rs resp.GetUserAccessTokenRsp
 
-	rsp, err := c.http.Get("https://api.weixin.qq.com/sns/oauth2/access_token", map[string]interface{}{
+	rsp, err := c.http.Get("https://api.weixin.qq.com/sns/oauth2/access_token", map[string]string{
 		"grant_type": "authorization_code",
 		"appid":      c.AppId,
 		"secret":     c.AppSecret,
@@ -111,7 +111,7 @@ func (c *Client) GetUserAccessToken(code string) (*resp.GetUserAccessTokenRsp, e
 func (c *Client) GetUserInfo(userAccessToken string, openId string, lang string) (*resp.GetUserInfoRsp, error) {
 	var rs resp.GetUserInfoRsp
 
-	rsp, err := c.http.Get("https://api.weixin.qq.com/sns/userinfo", map[string]interface{}{
+	rsp, err := c.http.Get("https://api.weixin.qq.com/sns/userinfo", map[string]string{
 		"access_token": userAccessToken,
 		"openid":       openId,
 		"lang":         lang,
@@ -139,7 +139,7 @@ func (c *Client) GetJsApiTicket() (*resp.GetJsApiTicketRsp, error) {
 		if err != nil {
 			return nil, err
 		}
-		rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/ticket/getticket", map[string]interface{}{
+		rsp, err := c.http.Get("https://api.weixin.qq.com/cgi-bin/ticket/getticket", map[string]string{
 			"type":         "jsapi",
 			"access_token": tokenRsp.AccessToken,
 		})
@@ -164,4 +164,3 @@ func (c *Client) GetJsApiTicket() (*resp.GetJsApiTicketRsp, error) {
 	}
 	return &rs, nil
 }
-
