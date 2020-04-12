@@ -2,11 +2,13 @@ package mp
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/bennya8/go-union-opensdk/wx/mp/resp"
 	"github.com/ddliu/go-httpclient"
 	"github.com/patrickmn/go-cache"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -70,6 +72,9 @@ func (c *Client) GetAccessToken() (*resp.GetAccessTokenRsp, error) {
 		if err != nil {
 			return nil, err
 		}
+		if strings.Contains(body, "errcode") {
+			return nil, errors.New(body)
+		}
 		err = json.Unmarshal([]byte(body), &rs)
 		if err != nil {
 			return nil, err
@@ -101,6 +106,9 @@ func (c *Client) GetUserAccessToken(code string) (*resp.GetUserAccessTokenRsp, e
 	if err != nil {
 		return nil, err
 	}
+	if strings.Contains(body, "errcode") {
+		return nil, errors.New(body)
+	}
 	err = json.Unmarshal([]byte(body), &rs)
 	if err != nil {
 		return nil, err
@@ -122,6 +130,9 @@ func (c *Client) GetUserInfo(userAccessToken string, openId string, lang string)
 	body, err := rsp.ToString()
 	if err != nil {
 		return nil, err
+	}
+	if strings.Contains(body, "errcode") {
+		return nil, errors.New(body)
 	}
 	err = json.Unmarshal([]byte(body), &rs)
 	if err != nil {
@@ -149,6 +160,9 @@ func (c *Client) GetJsApiTicket() (*resp.GetJsApiTicketRsp, error) {
 		body, err := rsp.ToString()
 		if err != nil {
 			return nil, err
+		}
+		if strings.Contains(body, "errcode") {
+			return nil, errors.New(body)
 		}
 		err = json.Unmarshal([]byte(body), &rs)
 		if err != nil {

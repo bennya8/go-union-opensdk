@@ -2,7 +2,9 @@ package mp
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/bennya8/go-union-opensdk/wx/mp/resp"
+	"strings"
 )
 
 // @link https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Template_Message_Interface.html#2
@@ -48,6 +50,9 @@ func (c *Client) MessageTemplateSend() (*resp.MessageTemplateSendResp, error) {
 	body, err := rsp.ToString()
 	if err != nil {
 		return nil, err
+	}
+	if strings.Contains(body, "errcode") {
+		return nil, errors.New(body)
 	}
 	err = json.Unmarshal([]byte(body), &rs)
 	if err != nil {
