@@ -1,10 +1,13 @@
 package mp
 
 import (
+	"crypto/hmac"
+	"crypto/sha1"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/bennya8/go-union-opensdk/wx/mp/resp"
+	"github.com/bennya8/go-union-opensdk/wx/util"
 	"github.com/ddliu/go-httpclient"
 	"github.com/patrickmn/go-cache"
 	"net/url"
@@ -45,12 +48,29 @@ func (c *Client) GetOauthUrl(redirectUri string, scope string) string {
 
 func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	var rs resp.GetSignPackageRsp
-	//ticket,err := c.GetJsApiTicket()
-	//timestamp := time.Now().Unix()
-	//nonceStr := helpers.StringRandom(16)
-	//rawString := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%s&url=%s")
-	//mac := hmac.New(sha1.New, []byte(rawString))
-	//_, err := mac.Write([]byte(signStr))
+	ticket, err := c.GetJsApiTicket()
+	if err != nil {
+		return nil, err
+	}
+
+	timestamp := time.Now().Unix()
+	nonceStr := util.StringRandom(16)
+	rawString := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%d&url=%s", ticket.Ticket, nonceStr, timestamp, url)
+
+	var signature string
+	mac := hmac.New(sha1.New, []byte(rawString))
+	_, err = mac.Write([]byte(signature))
+	if err != nil {
+		return nil, err
+	}
+
+	rs.AppId = c.AppId
+	rs.NonceStr = nonceStr
+	rs.Timestamp = timestamp
+	rs.Url = url
+	rs.Signature = signature
+	rs.RawString = rawString
+
 	return &rs, nil
 }
 
