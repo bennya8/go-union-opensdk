@@ -57,9 +57,8 @@ func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	nonceStr := util.StringRandom(16)
 	rawString := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%d&url=%s", ticket.Ticket, nonceStr, timestamp, url)
 
-	var signature string
-	mac := hmac.New(sha1.New, []byte(rawString))
-	_, err = mac.Write([]byte(signature))
+	mac := hmac.New(sha1.New, []byte{})
+	_, err = mac.Write([]byte(rawString))
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +67,7 @@ func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	rs.NonceStr = nonceStr
 	rs.Timestamp = timestamp
 	rs.Url = url
-	rs.Signature = signature
+	rs.Signature = string(mac.Sum(nil))
 	rs.RawString = rawString
 
 	return &rs, nil
