@@ -3,6 +3,7 @@ package mp
 import (
 	"crypto/hmac"
 	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -67,7 +68,7 @@ func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	rs.NonceStr = nonceStr
 	rs.Timestamp = timestamp
 	rs.Url = url
-	rs.Signature = string(mac.Sum(nil))
+	rs.Signature = hex.EncodeToString(mac.Sum(nil))
 	rs.RawString = rawString
 
 	return &rs, nil
