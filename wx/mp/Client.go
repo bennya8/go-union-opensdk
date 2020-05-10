@@ -210,7 +210,7 @@ func checkResponseBody(body string) error {
 	if _, ok := bodyJson["errcode"]; !ok {
 		return errors.New("invalid response")
 	}
-	if bodyJson["errcode"].(int) != 0 {
+	if int(bodyJson["errcode"].(float64)) != 0 {
 		return errors.New(bodyJson["errmsg"].(string))
 	}
 	return nil
