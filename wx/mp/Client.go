@@ -1,9 +1,7 @@
 package mp
 
 import (
-	"crypto/hmac"
 	"crypto/sha1"
-	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -58,8 +56,8 @@ func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	nonceStr := util.StringRandom(16)
 	rawString := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%d&url=%s", ticket.Ticket, nonceStr, timestamp, url)
 
-	mac := hmac.New(sha1.New, []byte{})
-	_, err = mac.Write([]byte(rawString))
+	h := sha1.New()
+	_, err = h.Write([]byte(rawString))
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +66,7 @@ func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	rs.NonceStr = nonceStr
 	rs.Timestamp = timestamp
 	rs.Url = url
-	rs.Signature = hex.EncodeToString(mac.Sum(nil))
+	rs.Signature = fmt.Sprintf("%x", h.Sum(nil))
 	rs.RawString = rawString
 
 	return &rs, nil
