@@ -11,6 +11,7 @@ import (
 	"github.com/ddliu/go-httpclient"
 	"github.com/patrickmn/go-cache"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -91,9 +92,8 @@ func (c *Client) GetAccessToken() (*resp.GetAccessTokenRsp, error) {
 		if err != nil {
 			return nil, err
 		}
-		err = checkResponseBody(body)
-		if err != nil {
-			return nil, err
+		if strings.Contains(body, "errcode") {
+			return nil, errors.New(body)
 		}
 		err = json.Unmarshal([]byte(body), &rs)
 		if err != nil {
@@ -126,9 +126,8 @@ func (c *Client) GetUserAccessToken(code string) (*resp.GetUserAccessTokenRsp, e
 	if err != nil {
 		return nil, err
 	}
-	err = checkResponseBody(body)
-	if err != nil {
-		return nil, err
+	if strings.Contains(body, "errcode") {
+		return nil, errors.New(body)
 	}
 	err = json.Unmarshal([]byte(body), &rs)
 	if err != nil {
