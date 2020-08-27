@@ -9,17 +9,6 @@ import (
 type CryptHelper struct {
 }
 
-func NewCryptHelper() *CryptHelper {
-	instance := &CryptHelper{}
-	return instance
-}
-
-func (c CryptHelper) EncodeMd5(text string) string {
-	hash := md5.New()
-	hash.Write([]byte(text))
-	return hex.EncodeToString(hash.Sum(nil))
-}
-
 func CryptMD5(text string) string {
 	hash := md5.New()
 	hash.Write([]byte(text))

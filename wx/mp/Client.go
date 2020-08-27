@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/bennya8/go-union-opensdk/utils"
 	"github.com/bennya8/go-union-opensdk/wx/mp/resp"
-	"github.com/bennya8/go-union-opensdk/wx/util"
 	"github.com/ddliu/go-httpclient"
 	"github.com/patrickmn/go-cache"
 	"net/url"
@@ -53,7 +53,7 @@ func (c *Client) GetSignPackage(url string) (*resp.GetSignPackageRsp, error) {
 	}
 
 	timestamp := time.Now().Unix()
-	nonceStr := util.StringRandom(16)
+	nonceStr := utils.StringRandom(16)
 	rawString := fmt.Sprintf("jsapi_ticket=%s&noncestr=%s&timestamp=%d&url=%s", ticket.Ticket, nonceStr, timestamp, url)
 
 	h := sha1.New()
