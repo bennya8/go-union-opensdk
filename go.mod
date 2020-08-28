@@ -9,4 +9,5 @@ require (
 	github.com/ddliu/go-httpclient v0.6.6 // indirect
 	github.com/imroc/req v0.3.0 // indirect
 	github.com/patrickmn/go-cache v2.1.0+incompatible // indirect
+	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
