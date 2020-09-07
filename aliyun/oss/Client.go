@@ -2,7 +2,10 @@ package oss
 
 import (
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/bennya8/go-union-opensdk/utils"
+	"math/rand"
 	"os"
+	"strconv"
 	"sync"
 )
 
@@ -31,3 +34,17 @@ func NewClient() *oss.Client {
 	return instance
 }
 
+func GetObjectDomain() string {
+	if len(domain) > 0 {
+		return domain
+	}
+	return endpoint
+}
+
+func GetObjectDir() string {
+	return utils.TimeFormatToNowString("YYYY") + "/" + utils.TimeFormatToNowString("MM") + "/" + utils.TimeFormatToNowString("DD") + "/"
+}
+func GetObjectKey() string {
+	now := utils.TimeFormatToNowString()
+	return utils.CryptMD5(now + strconv.Itoa(rand.Intn(1000000)) + strconv.Itoa(rand.Intn(1000000)))
+}
