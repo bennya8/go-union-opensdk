@@ -8,7 +8,6 @@ require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.4+incompatible
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/ddliu/go-httpclient v0.6.6
-	github.com/gogo/protobuf v0.0.0-20171213104750-35b81a066e52
 	github.com/imroc/req v0.3.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/satori/go.uuid v1.2.0 // indirect

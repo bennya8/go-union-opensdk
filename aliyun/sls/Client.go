@@ -2,7 +2,7 @@ package sls
 
 import (
 	sdk "github.com/aliyun/aliyun-log-go-sdk"
-	"github.com/gogo/protobuf/proto"
+	"github.com/bennya8/go-union-opensdk/utils"
 	"os"
 	"sync"
 	"time"
@@ -37,17 +37,17 @@ func PutLogLog(project string, store string, params map[string]string) error {
 	var content []*sdk.LogContent
 	for k, v := range params {
 		content = append(content, &sdk.LogContent{
-			Key:   proto.String(k),
-			Value: proto.String(v),
+			Key:   utils.ConvertString(k),
+			Value: utils.ConvertString(v),
 		})
 	}
 	log := &sdk.Log{
-		Time:     proto.Uint32(uint32(time.Now().Unix())),
+		Time:     utils.ConvertUint32(uint32(time.Now().Unix())),
 		Contents: content,
 	}
 
 	logGroup := &sdk.LogGroup{
-		Topic: proto.String(""),
+		Topic: utils.ConvertString(""),
 		//Source: proto.String("10.230.201.117"),
 		Logs: []*sdk.Log{log},
 	}
